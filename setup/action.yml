@@ -1,0 +1,27 @@
+name: 'setup'
+author: Robin Rottier
+description: 'Setup action to get useful build info environment variables'
+inputs:
+  token:
+    description: 'GITHUB token for repository access, usually from secrets.GITHUB_TOKEN'
+    required: false
+    default: ''
+outputs:
+  build_source:
+    description: "Source ref for this build; either 'tag' or 'branch'"
+    value: "${{ steps.setup.outputs.build_source }}"
+  build_branch:
+    description: "Branch being built or empty if we're building from a tag"
+    value: "steps.setup.outputs.build_branch "
+  build_tag:
+    description: "Tag being built or empty if we're building from a branch"
+    value: "steps.setup.outputs.build_tag "
+  build_version:
+    description: "Calculated version for this release based on tag or branch name and run number"
+    value: "steps.setup.outputs.build_version "
+runs:
+  using: "composite"
+  steps:
+    - id: setup
+      run: ${{ github.action_path }}/setup.ps1 -token:"${{ inputs.token }}"
+      shell: pwsh
