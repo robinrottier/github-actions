@@ -1,0 +1,25 @@
+name: 'upload'
+author: Robin Rottier
+description: 'Upload action for release binaries and other artifacts'
+inputs:
+  files:
+    description: Files to upload
+    required: true
+  upload_tag:
+    description: Tag to upload artifact to (defaults to value from previous 'setup' action)
+    required: false
+    default: ''
+  token:
+    description: 'GITHUB token for repository access, usually from secrets.GITHUB_TOKEN'
+    required: false
+    default: ''
+outputs:
+  filecount:
+    description: "Number of files uploaded"
+    value: "${{ steps.upload.outputs.filecount }}"
+runs:
+  using: "composite"
+  steps:
+    - id: upload
+      run: ${{ github.action_path }}/upload.ps1 -files:"${{ inputs.files }}" -token:"${{ inputs.token }}"
+      shell: pwsh
