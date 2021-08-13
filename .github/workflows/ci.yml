@@ -16,6 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: action-setup
-        uses: ./.github/github-actions/setup
+        uses: ./.github/github-actions/actions/setup
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
