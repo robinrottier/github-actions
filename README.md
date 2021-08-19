@@ -11,12 +11,13 @@ Summary of the process we want to achieve:
 
 We have:
 - "setup" action to invoke at start of the workflow - checks git ref and constructs a version string from that, set as an environemtn variable (and workflow outputs) for usein some build stage
-- build stage currently as per standard .net build workflows
 - "upload" action to upload binaries or any other artifact to the release in GH
 
+The build stage currently as per standard .net build workflows - deciding if that is so standard shou dlbe templated too: build/test/build release/package/publish
+
 Notes:
-- "powershell" seems to "just work" on GH runner instances (..that weve used i.e. ubuntu)
-- these actions are simple yml defintions defering to powershell script to do the actual work
+- powershell seems to "just work" on GH runner instances (..that weve used i.e. ubuntu ...just run `pwsh`)
+- these actions are simple yml defintions wrapping powershell script to do the actual work
 - GITHUB uploading acheived simply using the "gh" tool preinstalled on the github runner image, again seems to "just work" so long as github token is set
 - Logic within the powershell scripts is tested using pester...to execute those test you'll need "import-module pester -f" to force upgrade to v5. Have not yet included those tests in this repo workflow, to do.
 
@@ -25,13 +26,13 @@ include these actions in your workflows like this:
 ```yaml
   steps:
       - name: action-setup
-        uses: robinrottier/github-actions/setup
+        uses: robinrottier/github-actions/setup@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: build it
         run: dotnet whatever and zip up the release
       - name: upload
-        uses: robinrottier/github-actions/upload
+        uses: robinrottier/github-actions/upload@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: bin.zip        
