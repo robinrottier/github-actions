@@ -16,6 +16,7 @@ We have:
 
 Notes:
 - "powershell" seems to "just work" on GH runner instances (..that weve used i.e. ubuntu)
+- these actions are simple yml defintions defering to powershell script to do the actual work
 - GITHUB uploading acheived simply using the "gh" tool preinstalled on the github runner image, again seems to "just work" so long as github token is set
 - Logic within the powershell scripts is tested using pester...to execute those test you'll need "import-module pester -f" to force upgrade to v5. Have not yet included those tests in this repo workflow, to do.
 
@@ -24,13 +25,13 @@ include these actions in your workflows like this:
 ```yaml
   steps:
       - name: action-setup
-        uses: robinrottier/setup
+        uses: robinrottier/github-actions/setup
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: build it
         run: dotnet whatever and zip up the release
       - name: upload
-        uses: robinrottier/upload
+        uses: robinrottier/github-actions/upload
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: bin.zip        
